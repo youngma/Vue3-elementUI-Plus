@@ -7,6 +7,7 @@ import Components from 'unplugin-vue-components/vite'
 import { ElementPlusResolver } from 'unplugin-vue-components/resolvers'
 import ElementPlus from 'unplugin-element-plus/vite'
 import svgLoader from 'vite-svg-loader'
+import path from 'path-browserify'
 
 import { viteMockServe } from '@lincy/vite-plugin-mock'
 
@@ -21,6 +22,7 @@ export default ({ mode }) => {
   return defineConfig({
     resolve: {
       alias: {
+        path: 'path-browserify',
         '@': fileURLToPath(new URL('./src', import.meta.url))
         // '~': `${pathNodeModules}/`
       }
