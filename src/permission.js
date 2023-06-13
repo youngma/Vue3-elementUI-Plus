@@ -10,7 +10,6 @@ import { permissionStore } from '@/store/modules/permission.js'
 import { userStore } from '@/store/modules/user.js'
 
 export function install() {
-
   const _permissionStore = permissionStore()
   const _userStore = userStore()
 
@@ -35,9 +34,15 @@ export function install() {
       } else {
         // determine whether the user has obtained his permission roles through getInfo
         const hasRoles = _userStore.state.roles && _userStore.state.roles.length > 0
-
-
         if (hasRoles) {
+          const { roles } = await _userStore.getInfo()
+
+          // generate accessible routes map based on roles
+          const accessRoutes = await _permissionStore.generateRoutes(roles)
+
+          // dynamically add accessible routes
+          router.addRoute(accessRoutes)
+
           next()
         } else {
           try {
@@ -49,7 +54,7 @@ export function install() {
             const accessRoutes = await _permissionStore.generateRoutes(roles)
 
             // dynamically add accessible routes
-            router.addRoutes(accessRoutes)
+            router.addRoute(accessRoutes)
 
             // hack method to ensure that addRoutes is complete
             // set the replace: true, so the navigation will not leave a history record
@@ -57,9 +62,8 @@ export function install() {
           } catch (error) {
             console.log(error)
             // remove token and go to login page to re-login
-            // await store.dispatch('user/resetToken')
-            // ElMessage.error(error || 'Has Error')
-            // next(`/login?redirect=${to.path}`)
+            ElMessage.error(error || 'Has Error')
+            next(`/login?redirect=${to.path}`)
             NProgress.done()
           }
         }

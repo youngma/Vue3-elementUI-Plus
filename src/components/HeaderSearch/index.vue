@@ -1,6 +1,6 @@
 <template>
   <div :class="{'show':show}" class="header-search">
-    <svg-icon class-name="search-icon" icon-class="search" @click.stop="click" />
+<!--    <svg-icon class-name="search-icon" icon-class="search" @click.stop="click" />-->
     <el-select
       ref="headerSearchSelect"
       v-model="search"
@@ -24,14 +24,15 @@ import Fuse from 'fuse.js'
 import path from 'path'
 
 import { permissionStore } from '@/store/modules/permission.js'
+import { mapState } from 'pinia'
 
 export default {
   name: 'HeaderSearch',
   setup() {
-    const permission = permissionStore()
-    return {
-      permission
-    }
+    // const _permissionStore = permissionStore()
+    // return {
+    //   permissionStore: _permissionStore
+    // }
   },
   data() {
     return {
@@ -43,8 +44,9 @@ export default {
     }
   },
   computed: {
-    routes() {
-      const { state } = this.permission
+    ...mapState(permissionStore, ['state']),
+    routes(store) {
+      const { state } = store
       return state.routes
     }
   },
@@ -112,6 +114,8 @@ export default {
         // skip hidden router
         if (router.hidden) { continue }
 
+
+        console.log(basePath, router.path)
         const data = {
           path: path.resolve(basePath, router.path),
           title: [...prefixTitle]

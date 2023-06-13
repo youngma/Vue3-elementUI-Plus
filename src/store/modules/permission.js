@@ -3,7 +3,6 @@ import { defineStore } from 'pinia'
 import { reactive } from 'vue'
 
 export const permissionStore = defineStore('permissionStore', () => {
-
   const state = reactive({
     routes: [],
     addRoutes: []
@@ -52,12 +51,14 @@ export const permissionStore = defineStore('permissionStore', () => {
         accessedRoutes = filterAsyncRoutes(asyncRoutes, roles)
       }
 
-      state.addRoutes.value = accessedRoutes
-      state.routesvalue = constantRoutes.concat(accessedRoutes)
+      this.state.addRoutes = accessedRoutes
+      this.state.routes = constantRoutes.concat(accessedRoutes)
 
       resolve(accessedRoutes)
     })
   }
 
   return { state, generateRoutes }
+}, {
+  persist: true
 })

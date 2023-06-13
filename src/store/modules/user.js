@@ -101,7 +101,7 @@ export const userStore = defineStore(
       // generate accessible routes map based on roles
       const accessRoutes = await permissionStore.generateRoutes(roles)
       // dynamically add accessible routes
-      router.addRoutes(accessRoutes)
+      router.addRoute(accessRoutes)
 
       // reset visited views and cached views
       // dispatch('tagsView/delAllViews', null, { root: true })
