@@ -3,7 +3,9 @@
     <div class="rightPanel-background" />
     <div class="rightPanel">
       <div class="handle-button" :style="{'top':buttonTop+'px','background-color':theme}" @click="show=!show">
-        <i :class="show?'el-icon-close':'el-icon-setting'" />
+<!--        <i :class="show?'el-icon-close':'el-icon-setting'" />-->
+        <span v-if="!show"><el-icon><Setting /></el-icon></span>
+        <span v-else><el-icon><Close /></el-icon></span>
       </div>
       <div class="rightPanel-items">
         <slot />
@@ -14,9 +16,17 @@
 
 <script>
 import { addClass, removeClass } from '@/utils'
+import { settingStore } from '@/store/modules/settings'
 
 export default {
   name: 'RightPanel',
+  setup() {
+    const _settingStore = settingStore()
+
+    return {
+      settingStore: _settingStore
+    }
+  },
   props: {
     clickNotClose: {
       default: false,
@@ -27,6 +37,7 @@ export default {
       type: Number
     }
   },
+
   data() {
     return {
       show: false
@@ -34,7 +45,7 @@ export default {
   },
   computed: {
     theme() {
-      return this.$store.state.settings.theme
+      return this.settingStore.state.theme
     }
   },
   watch: {
@@ -52,7 +63,7 @@ export default {
   mounted() {
     this.insertToBody()
   },
-  beforeDestroy() {
+  beforeUnmount() {
     const elx = this.$refs.rightPanel
     elx.remove()
   },

@@ -3,14 +3,14 @@
     <div v-if="layoutComputed.getDevice==='mobile'&&layoutComputed.sidebar.opened" class="drawer-bg" @click="handleClickOutside" />
     <sidebar class="sidebar-container" />
     <div :class="{ hasTagsView: layoutComputed.needTagsView }" class="main-container">
-      <div :class="{'fixed-header': layoutComputed.fixedHeader}">
-        <navbar />
-        <tags-view v-if="layoutComputed.needTagsView" />
-      </div>
-      <app-main />
-      <right-panel v-if="layoutComputed.showSettings">
-        <settings />
-      </right-panel>
+        <div :class="{'fixed-header': layoutComputed.fixedHeader}">
+          <navbar />
+          <tags-view v-if="layoutComputed.needTagsView" />
+        </div>
+        <app-main />
+        <right-panel v-if="layoutComputed.showSettings">
+          <settings />
+        </right-panel>
     </div>
   </div>
 </template>
@@ -23,8 +23,6 @@ import { AppMain, Navbar, Settings, Sidebar, TagsView } from './components'
 import { appStore } from '@/store/modules/app'
 import { settingStore } from '@/store/modules/settings'
 import { computed } from 'vue'
-
-// import { computed } from 'vue'
 
 const _settingStore = settingStore()
 const _appStore = appStore()

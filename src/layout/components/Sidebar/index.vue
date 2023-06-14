@@ -12,7 +12,6 @@
         :collapse-transition="false"
         mode="vertical"
       >
-        <sidebar-item v-for="route in permission_routes" :key="route.path" :item="route" :base-path="route.path" />
       </el-menu>
     </el-scrollbar>
   </div>
@@ -30,6 +29,7 @@ import { appStore } from '@/store/modules/app'
 
 export default {
   name: 'SidebarIndex',
+  components: { SidebarItem, Logo },
   setup() {
     const permission = permissionStore()
     const setting = settingStore()
@@ -39,10 +39,9 @@ export default {
       permission, setting, app
     }
   },
-  components: { SidebarItem, Logo },
   computed: {
     permission_routes() {
-      return this.permission.routes
+      return this.permission.state.routes
     },
     activeMenu() {
       const route = this.$route

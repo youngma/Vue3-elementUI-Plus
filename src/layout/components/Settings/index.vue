@@ -29,53 +29,77 @@
 
 <script>
 import ThemePicker from '@/components/ThemePicker/index.vue'
+import { settingStore } from '@/store/modules/settings'
 
 export default {
+  name: 'SettingsView',
   components: { ThemePicker },
+  setup() {
+    const _settingStore = settingStore()
+    return {
+      settingStore: _settingStore
+    }
+  },
   data() {
     return {}
   },
   computed: {
     fixedHeader: {
       get() {
-        return this.$store.state.settings.fixedHeader
+        return this.settingStore.state.fixedHeader
       },
       set(val) {
-        this.$store.dispatch('settings/changeSetting', {
+        this.settingStore.changeSetting({
           key: 'fixedHeader',
           value: val
         })
+        // this.$store.dispatch('settings/c', {
+        //   key: 'fixedHeader',
+        //   value: val
+        // })
       }
     },
     tagsView: {
       get() {
-        return this.$store.state.settings.tagsView
+        return this.settingStore.state.tagsView
       },
       set(val) {
-        this.$store.dispatch('settings/changeSetting', {
+        this.settingStore.changeSetting({
           key: 'tagsView',
           value: val
         })
+        // this.$store.dispatch('settings/changeSetting', {
+        //   key: 'tagsView',
+        //   value: val
+        // })
       }
     },
     sidebarLogo: {
       get() {
-        return this.$store.state.settings.sidebarLogo
+        return this.settingStore.state.sidebarLogo
       },
       set(val) {
-        this.$store.dispatch('settings/changeSetting', {
+        this.settingStore.changeSetting({
           key: 'sidebarLogo',
           value: val
         })
+        // this.$store.dispatch('settings/changeSetting', {
+        //   key: 'sidebarLogo',
+        //   value: val
+        // })
       }
     }
   },
   methods: {
     themeChange(val) {
-      this.$store.dispatch('settings/changeSetting', {
+      this.settingStore.changeSetting({
         key: 'theme',
         value: val
       })
+      // this.$store.dispatch('settings/changeSetting', {
+      //   key: 'theme',
+      //   value: val
+      // })
     }
   }
 }

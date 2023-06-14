@@ -8,20 +8,29 @@
 </template>
 
 <script>
+import { settingStore } from '@/store/modules/settings'
+
 const version = '2.3.6' // element-ui version from node_modules
 const ORIGINAL_THEME = '#409EFF' // default color
 
 export default {
   name: 'ThemePicker',
+  setup() {
+    const _settingStore = settingStore()
+    return {
+      settingStore: _settingStore
+    }
+  },
   data() {
     return {
       chalk: '', // content of theme-chalk css
       theme: ''
     }
   },
+
   computed: {
     defaultTheme() {
-      return this.$store.state.settings.theme
+      return this.settingStore.theme
     }
   },
   watch: {

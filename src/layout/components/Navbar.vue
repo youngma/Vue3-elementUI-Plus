@@ -76,7 +76,7 @@ function toggleSideBar() {
 
 async function logout() {
   await _userStore.logout()
-  const currentPath = router.currentRoute.value.fullPath;
+  const currentPath = router.currentRoute.value.fullPath
   await router.push(`/login?redirect=${currentPath}`)
 }
 

@@ -1,7 +1,15 @@
+import { appStore } from '@/store/modules/app.js'
+
 export default {
+  setup() {
+    const _appStore = appStore()
+    return {
+      appStore: _appStore
+    }
+  },
   computed: {
     device() {
-      return this.$store.state.app.device
+      return appStore.device
     }
   },
   mounted() {
