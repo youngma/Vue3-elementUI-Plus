@@ -80,8 +80,8 @@ export const userStore = defineStore(
     // remove token
     const resetToken = () => {
       return new Promise(resolve => {
-        state.token.value = ''
-        state.roles.value = []
+        state.token = ''
+        state.roles = []
         AuthUtils.removeToken()
         resolve()
       })

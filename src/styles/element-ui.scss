@@ -66,6 +66,13 @@
   }
 }
 
+.el-dropdown {
+  display: inline-block;
+  position: relative;
+  color: #606266;
+  font-size: 14px
+}
+
 // dropdown
 .el-dropdown-menu {
   a {

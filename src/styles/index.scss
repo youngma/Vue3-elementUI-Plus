@@ -2,12 +2,12 @@
 @use "element-plus/theme-chalk/src/dark/css-vars.scss" as *;
 
 @import './variables.scss';
-//@import './variables.scss';
 @import './mixin.scss';
 @import './transition.scss';
 @import './element-ui.scss';
 @import './sidebar.scss';
 @import './btn.scss';
+@import './sgv-icon.scss';
 
 body {
   height: 100%;
