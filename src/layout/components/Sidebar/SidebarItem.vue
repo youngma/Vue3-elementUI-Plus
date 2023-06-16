@@ -5,24 +5,23 @@
       <app-link v-if="onlyOneChild.meta" :to="resolvePath(onlyOneChild.path)">
         <el-menu-item :index="resolvePath(onlyOneChild.path)" :class="{'submenu-title-noDropdown':!isNest}">
           <el-icon><document /></el-icon>
-          <template #title>{{  onlyOneChild.meta.title  }}</template>
+          <template #title>{{ onlyOneChild.meta.title  }}</template>
         </el-menu-item>
       </app-link>
     </template>
 
-    <el-sub-menu v-else ref="subMenu">
+    <el-sub-menu v-else ref="subMenu" :index="resolvePath(item.path)">
       <template #title>
         <el-icon><document /></el-icon>
-        <span>{{  item.meta.title  }}</span>
+        <span>{{ item.meta.title  }}</span>
       </template>
-      <el-menu-item-group  :index="resolvePath(item.path)" :class="{'submenu-title-noDropdown':!isNest}">
+<!--      <el-menu-item-group  :index="resolvePath(item.path)" :class="{'submenu-title-noDropdown':!isNest}">-->
         <app-link v-for="child in item.children" :to="resolvePath(child.path)" :key="child.path" >
           <el-menu-item :index="resolvePath(child.path)"  class="nest-menu">
-            <el-icon><document /></el-icon>
             <template #title>{{  child.meta.title  }}</template>
           </el-menu-item>
         </app-link>
-      </el-menu-item-group>
+<!--      </el-menu-item-group>-->
     </el-sub-menu>
   </div>
 </template>
