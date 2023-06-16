@@ -23,20 +23,26 @@ import * as permission from '@/permission.js'
 const pinia = createPinia()
 pinia.use(piniaPluginPersistedstate)
 
+
+
 const newApp = createApp(App)
   .use(pinia)
-  .use(router)
   .use(ElementPlus, {
     size: Cookies.get('size') || 'medium', // set element-ui default size
     locale: enLang // 如果使用中文，无需设置，请删除
   })
 
+await permission.generateRoutes(router)
+
+newApp.use(router)
+
 for (const [key, component] of Object.entries(ElementPlusIconsVue)) {
   newApp.component(key, component)
 }
 
-newApp.config.globalProperties.$router = router
-newApp.provide('$router', newApp.config.globalProperties.$router)
+
+// newApp.config.globalProperties.$router = router
+// newApp.provide('$router', newApp.config.globalProperties.$router)
 
 // Object.keys(filters).forEach(key => {
 //   newApp.filter(key, filters[key])
@@ -48,4 +54,3 @@ newApp.provide('$router', newApp.config.globalProperties.$router)
 
 newApp.mount('#app')
 
-permission.install()

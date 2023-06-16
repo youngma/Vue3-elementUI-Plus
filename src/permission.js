@@ -1,5 +1,3 @@
-import router from './router'
-// import store from './store'
 import { ElMessage } from 'element-plus'
 import NProgress from 'nprogress' // progress bar
 import 'nprogress/nprogress.css' // progress bar style
@@ -9,15 +7,36 @@ import getPageTitle from '@/utils/get-page-title'
 import { permissionStore } from '@/store/modules/permission.js'
 import { userStore } from '@/store/modules/user.js'
 
-export function install() {
+export {
+  generateRoutes
+}
+
+async function generateRoutes(router) {
+
   const _permissionStore = permissionStore()
   const _userStore = userStore()
+
+  // get user info
+  const { roles } = await _userStore.getInfo()
+
+  // generate accessible routes map based on roles
+  await _permissionStore.generateRoutes(router, roles)
+
+  install(router)
+}
+
+function install(router) {
+
+  // const _permissionStore = permissionStore()
 
   NProgress.configure({ showSpinner: false }) // NProgress Configuration
 
   const whiteList = ['/login', '/auth-redirect'] // no redirect whitelist
 
   router.beforeEach(async(to, from, next) => {
+
+    const _userStore = userStore()
+
     // start progress bar
     NProgress.start()
 
@@ -35,36 +54,14 @@ export function install() {
         // determine whether the user has obtained his permission roles through getInfo
         const hasRoles = _userStore.state.roles && _userStore.state.roles.length > 0
         if (hasRoles) {
-          const { roles } = await _userStore.getInfo()
-
-          // generate accessible routes map based on roles
-          await _permissionStore.generateRoutes(router, roles)
-
-          // console.log(accessRoutes)
-
-          // dynamically add accessible routes
-          // router.addRoute(router, accessRoutes)
-
-          // console.log(router.getRoutes())
-
+          // this.generateRoutes(router)
           next()
         } else {
           try {
-            // get user info
-            // note: roles must be a object array! such as: ['admin'] or ,['developer','editor']
-            const { roles } = await _userStore.getInfo()
-
-            // generate accessible routes map based on roles
-            await _permissionStore.generateRoutes(router, roles)
-
-            // dynamically add accessible routes
-            // router.addRoute(accessRoutes)
-
-            // hack method to ensure that addRoutes is complete
-            // set the replace: true, so the navigation will not leave a history record
+            // this.generateRoutes(router)
             next({ ...to, replace: true })
           } catch (error) {
-            console.log(error)
+            // console.log(error)
             // remove token and go to login page to re-login
             ElMessage.error(error || 'Has Error')
             next(`/login?redirect=${to.path}`)
@@ -90,3 +87,4 @@ export function install() {
     NProgress.done()
   })
 }
+

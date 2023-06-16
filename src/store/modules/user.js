@@ -34,6 +34,7 @@ export const userStore = defineStore(
 
     const getInfo = () => {
       return new Promise((resolve, reject) => {
+
         userAPI.getInfo(state.token).then(response => {
           const { data } = response
 

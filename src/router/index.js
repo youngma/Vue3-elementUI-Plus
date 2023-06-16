@@ -3,6 +3,8 @@ import { createRouter, createWebHistory } from 'vue-router'
 
 /* Layout */
 import Layout from '@/layout/index.vue'
+import * as permission from '../permission.js'
+import {generateRoutes} from "../permission.js";
 
 /* Router Modules */
 // import componentsRouter from './modules/components'
@@ -217,7 +219,7 @@ export const asyncRoutes = [
         meta: { title: '404', noCache: true }
       }
     ]
-  },
+  }
   //
   // {
   //   path: '/error-log',

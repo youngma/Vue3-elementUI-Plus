@@ -15,12 +15,10 @@
 import { tagsViewStore } from '@/store/modules/tagsView.js'
 import { computed } from 'vue'
 
-import router from '@/router'
-
 const _tagViewStore = tagsViewStore()
 
 const cachedViews = computed(() => _tagViewStore.getCachedViews)
-const key = computed(() => router.path)
+// const key = computed(() => router.path)
 
 // export default {
 //   name: 'AppMain',
