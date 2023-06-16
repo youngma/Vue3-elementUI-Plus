@@ -45,7 +45,7 @@ function handleClickOutside() {
 
 <style lang="scss" scoped>
   @import "@/styles/mixin";
-  @import "@/styles/variables";
+  @import "@/styles/variables.module.scss";
 
   .app-wrapper {
     @include clearfix;

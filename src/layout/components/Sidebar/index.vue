@@ -12,6 +12,7 @@
         :collapse-transition="false"
         mode="vertical"
       >
+        <sidebar-item v-for="route in permission_routes" :key="route.path" :item="route" :base-path="route.path" />
       </el-menu>
     </el-scrollbar>
   </div>
@@ -21,7 +22,7 @@
 // import { mapGetters } from 'vuex'
 import Logo from './Logo.vue'
 import SidebarItem from './SidebarItem.vue'
-import variables from '@/styles/variables.scss?inline'
+import variables from '@/styles/variables.module.scss'
 
 import { permissionStore } from '@/store/modules/permission'
 import { settingStore } from '@/store/modules/settings'

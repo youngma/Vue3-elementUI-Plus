@@ -1,5 +1,5 @@
 
-import variables from '@/styles/element-variables.scss?inline'
+import variables from '@/styles/element-variables.module.scss'
 
 import setting from '@/settings'
 import { defineStore } from 'pinia'
@@ -8,10 +8,8 @@ import { computed, reactive } from 'vue'
 export const settingStore = defineStore('settingStore', () => {
   const { showSettings, tagsView, fixedHeader, sidebarLogo } = setting
 
-  console.log(variables)
-
   const state = reactive({
-    theme: '#1890ff',
+    theme: variables.theme,
     showSettings: showSettings,
     tagsView: tagsView,
     fixedHeader: fixedHeader,
