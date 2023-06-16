@@ -38,10 +38,14 @@ export function install() {
           const { roles } = await _userStore.getInfo()
 
           // generate accessible routes map based on roles
-          const accessRoutes = await _permissionStore.generateRoutes(roles)
+          await _permissionStore.generateRoutes(router, roles)
+
+          // console.log(accessRoutes)
 
           // dynamically add accessible routes
-          router.addRoute(accessRoutes)
+          // router.addRoute(router, accessRoutes)
+
+          // console.log(router.getRoutes())
 
           next()
         } else {
@@ -51,10 +55,10 @@ export function install() {
             const { roles } = await _userStore.getInfo()
 
             // generate accessible routes map based on roles
-            const accessRoutes = await _permissionStore.generateRoutes(roles)
+            await _permissionStore.generateRoutes(router, roles)
 
             // dynamically add accessible routes
-            router.addRoute(accessRoutes)
+            // router.addRoute(accessRoutes)
 
             // hack method to ensure that addRoutes is complete
             // set the replace: true, so the navigation will not leave a history record

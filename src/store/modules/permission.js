@@ -42,7 +42,7 @@ export const permissionStore = defineStore('permissionStore', () => {
     return res
   }
 
-  function generateRoutes(roles) {
+  function generateRoutes(router, roles) {
     return new Promise(resolve => {
       let accessedRoutes
       if (roles.includes('admin')) {
@@ -54,7 +54,9 @@ export const permissionStore = defineStore('permissionStore', () => {
       this.state.addRoutes = accessedRoutes
       this.state.routes = constantRoutes.concat(accessedRoutes)
 
-      resolve(accessedRoutes)
+      accessedRoutes.forEach(route => router.addRoute(route))
+
+      resolve()
     })
   }
 
