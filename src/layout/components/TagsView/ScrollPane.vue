@@ -6,9 +6,16 @@
 
 <script>
 const tagAndTagSpacing = 4 // tagAndTagSpacing
+import { ref } from 'vue'
 
 export default {
   name: 'ScrollPane',
+  setup: () => {
+    const scrollContainer = ref()
+    return {
+      scrollContainer
+    }
+  },
   data() {
     return {
       left: 0
@@ -16,15 +23,15 @@ export default {
   },
   computed: {
     scrollWrapper() {
-      return this.$refs.scrollContainer.$refs.wrap
+      return this.scrollContainer.wrapRef
     }
   },
-  // mounted() {
-  //   this.scrollWrapper.addEventListener('scroll', this.emitScroll, true)
-  // },
-  // unmounted() {
-  //   this.scrollWrapper.removeEventListener('scroll', this.emitScroll)
-  // },
+  mounted() {
+    this.scrollWrapper.addEventListener('scroll', this.emitScroll, true)
+  },
+  unmounted() {
+    this.scrollWrapper.removeEventListener('scroll', this.emitScroll)
+  },
   methods: {
     handleScroll(e) {
       const eventDelta = e.wheelDelta || -e.deltaY * 40
@@ -35,10 +42,11 @@ export default {
       this.$emit('scroll')
     },
     moveToTarget(currentTag) {
-      const $container = this.$refs.scrollContainer.$el
+      const $container = this.scrollContainer.$el
       const $containerWidth = $container.offsetWidth
-      const $scrollWrapper = this.scrollWrapper
-      const tagList = this.$parent.$refs.tag
+      const $scrollWrapper = this.scrollContainer
+
+      const tagList = this.$parent.$refs.tagRef
 
       let firstTag = null
       let lastTag = null
@@ -49,21 +57,25 @@ export default {
         lastTag = tagList[tagList.length - 1]
       }
 
-      if (firstTag === currentTag) {
+      if (firstTag.to.fullPath === currentTag.fullPath) {
         $scrollWrapper.scrollLeft = 0
-      } else if (lastTag === currentTag) {
+      } else if (lastTag.to.fullPath === currentTag.fullPath) {
         $scrollWrapper.scrollLeft = $scrollWrapper.scrollWidth - $containerWidth
       } else {
         // find preTag and nextTag
-        const currentIndex = tagList.findIndex(item => item === currentTag)
+        const currentIndex = tagList.findIndex(item => item.to.fullPath === currentTag.fullPath)
         const prevTag = tagList[currentIndex - 1]
         const nextTag = tagList[currentIndex + 1]
 
+        console.log(3, currentIndex)
+        console.log(4, prevTag)
+        console.log(5, nextTag)
+
         // the tag's offsetLeft after of nextTag
-        const afterNextTagOffsetLeft = nextTag.$el.offsetLeft + nextTag.$el.offsetWidth + tagAndTagSpacing
+        const afterNextTagOffsetLeft = nextTag.$el.nextSibling.offsetLeft + nextTag.$el.nextSibling.offsetWidth + tagAndTagSpacing
 
         // the tag's offsetLeft before of prevTag
-        const beforePrevTagOffsetLeft = prevTag.$el.offsetLeft - tagAndTagSpacing
+        const beforePrevTagOffsetLeft = prevTag.$el.nextSibling.offsetLeft - tagAndTagSpacing
 
         if (afterNextTagOffsetLeft > $scrollWrapper.scrollLeft + $containerWidth) {
           $scrollWrapper.scrollLeft = afterNextTagOffsetLeft - $containerWidth

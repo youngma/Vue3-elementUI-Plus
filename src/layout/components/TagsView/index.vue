@@ -1,18 +1,24 @@
 <template>
   <div id="tags-view-container" class="tags-view-container">
-    <scroll-pane ref="scrollPane" class="tags-view-wrapper" @scroll="handleScroll">
+    <scroll-pane ref="scrollPaneRef" class="tags-view-wrapper" @scroll="handleScroll">
       <router-link
+        ref="tagRef"
         v-for="tag in visitedViews"
-        ref="tag"
         :key="tag.path"
-        :class="isActive(tag)?'active':''"
+        v-slot="{ navigate }"
+        custom
         :to="{ path: tag.path, query: tag.query, fullPath: tag.fullPath }"
-        class="tags-view-item"
-        @click.middle="!isAffix(tag)?closeSelectedTag(tag):''"
-        @contextmenu.prevent="openMenu(tag,$event)"
       >
-          <span>{{ tag.title }}</span>
-          <span v-if="!isAffix(tag)" class="el-icon-close" @click.prevent.stop="closeSelectedTag(tag)" />
+        <div
+            class="tags-view-item"
+            :class="isActive(tag)?'active':''"
+            @click="navigate"
+            @click.middle="!isAffix(tag)?closeSelectedTag(tag):''"
+            @contextmenu.prevent="openMenu(tag,$event)"
+        >
+          {{ tag.title }}
+          <span v-if="!isAffix(tag)" class="el-close" @click.prevent.stop="closeSelectedTag(tag)" />
+        </div>
       </router-link>
     </scroll-pane>
     <ul v-show="visible" :style="{left:left+'px',top:top+'px'}" class="contextmenu">
@@ -32,19 +38,62 @@ import { settingStore } from '@/store/modules/settings'
 import { appStore } from '@/store/modules/app'
 import { tagsViewStore } from '@/store/modules/tagsView'
 
-import router from '@/router'
+import { ref, inject, watch, nextTick } from 'vue'
+
+// import router from '@/router'
 
 export default {
   name: 'TagsView',
   components: { ScrollPane },
-  setup() {
+  setup: () => {
     const tagsView = tagsViewStore()
     const permission = permissionStore()
     const setting = settingStore()
     const app = appStore()
 
+    const router = inject('$router')
+
+    const scrollPaneRef = ref()
+    const tagRef = ref()
+
+    function addTags() {
+      const { name } = router.currentRoute.value
+      if (name) {
+        tagsView.addView(router.currentRoute.value)
+      }
+      return false
+    }
+
+    function moveToCurrentTag() {
+      const currentPath = router.currentRoute.value.path
+      const currentFullPath = router.currentRoute.value.fullPath
+
+      nextTick(() => {
+        for (const tag of tagsView.visitedViews) {
+          if (tag.path === currentPath) {
+            scrollPaneRef.value.moveToTarget(tag)
+            // when query is different then update
+            if (tag.fullPath !== currentFullPath) {
+              tagsView.updateVisitedView(this.router)
+            }
+            break
+          }
+        }
+      })
+    }
+
+    watch(
+      () => router.currentRoute.value.fullPath,
+      async fullPath => {
+        addTags()
+        moveToCurrentTag()
+      }
+    )
+
     return {
-      permission, setting, app, tagsView
+      permission, setting, app, tagsView, router, addTags,
+      scrollPaneRef,
+      tagRef
     }
   },
   data() {
@@ -65,10 +114,6 @@ export default {
     }
   },
   watch: {
-    router() {
-      this.addTags()
-      this.moveToCurrentTag()
-    },
     visible(value) {
       if (value) {
         document.body.addEventListener('click', this.closeMenu)
@@ -119,31 +164,7 @@ export default {
         }
       }
     },
-    addTags() {
-      const { name } = router.currentRoute.value
-      if (name) {
-        this.tagsView.addView(router.currentRoute.value)
-      }
-      return false
-    },
-    moveToCurrentTag() {
-      const tags = this.$refs.tag
-      const currentPath = router.currentRoute.value.path
-      const currentFullPath = router.currentRoute.value.fullPath
 
-      this.$nextTick(() => {
-        for (const tag of tags) {
-          if (tag.to.path === currentPath) {
-            this.$refs.scrollPane.moveToTarget(tag)
-            // when query is different then update
-            if (tag.to.fullPath !== currentFullPath) {
-              this.tagsView.updateVisitedView(router)
-            }
-            break
-          }
-        }
-      })
-    },
     refreshSelectedTag(view) {
       this.tagsView.delCachedView(view).then(() => {
         const { fullPath } = view
@@ -257,7 +278,7 @@ export default {
           height: 8px;
           border-radius: 50%;
           position: relative;
-          margin-right: 2px;
+          margin-right: 6px;
         }
       }
     }

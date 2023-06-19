@@ -41,8 +41,8 @@ for (const [key, component] of Object.entries(ElementPlusIconsVue)) {
 }
 
 
-// newApp.config.globalProperties.$router = router
-// newApp.provide('$router', newApp.config.globalProperties.$router)
+newApp.config.globalProperties.$router = router
+newApp.provide('$router', newApp.config.globalProperties.$router)
 
 // Object.keys(filters).forEach(key => {
 //   newApp.filter(key, filters[key])
