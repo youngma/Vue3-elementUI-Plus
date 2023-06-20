@@ -4,7 +4,7 @@ import { createRouter, createWebHistory } from 'vue-router'
 /* Layout */
 import Layout from '@/layout/index.vue'
 import * as permission from '../permission.js'
-import {generateRoutes} from "../permission.js";
+import { generateRoutes } from '../permission.js'
 
 /* Router Modules */
 // import componentsRouter from './modules/components'
@@ -219,7 +219,7 @@ export const asyncRoutes = [
         meta: { title: '404', noCache: true }
       }
     ]
-  }
+  },
   //
   // {
   //   path: '/error-log',
@@ -345,7 +345,7 @@ export const asyncRoutes = [
   // },
 
   // 404 page must be placed at the end !!!
-  // { path: '*', redirect: '/404', hidden: true }
+  { path: '/:pathMatch(.*)*', redirect: '/404', hidden: true }
 ]
 
 const currentRouter = () => createRouter({
