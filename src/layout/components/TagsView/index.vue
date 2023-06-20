@@ -17,7 +17,7 @@
             @contextmenu.prevent="openMenu(tag,$event)"
         >
           {{ tag.title }}
-          <span v-if="!isAffix(tag)" class="el-close" @click.prevent.stop="closeSelectedTag(tag)" />
+          <Close v-if="!isAffix(tag)" style="width: 1em; height: 1em; margin: 1px 0px 0px 8px" @click.prevent.stop="closeSelectedTag(tag)"></Close>
         </div>
       </router-link>
     </scroll-pane>
@@ -92,8 +92,8 @@ export default {
 
     return {
       permission, setting, app, tagsView, router, addTags,
-      scrollPaneRef,
-      tagRef
+      moveToCurrentTag,
+      scrollPaneRef, tagRef
     }
   },
   data() {
