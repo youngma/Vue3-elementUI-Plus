@@ -36,7 +36,7 @@
     "unplugin-auto-import": "^0.16.4",
     "unplugin-element-plus": "^0.7.1",
     "vue": "^3.3.4",
-    "vue-codemirror": "^6.1.1",
+    "vue-codemirror6": "^1.1.22",
     "vue-router": "^4.1.6"
   },
   "devDependencies": {
