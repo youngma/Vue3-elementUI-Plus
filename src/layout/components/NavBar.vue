@@ -49,15 +49,20 @@
 
 <script setup>
 
+defineOptions({
+  name: 'NavBar',
+  inheritAttrs: false
+})
+
 import { appStore } from '@/store/modules/app'
 import { userStore } from '@/store/modules/user'
 
 import Breadcrumb from '@/components/Breadcrumb/index.vue'
 import Hamburger from '@/components/Hamburger/index.vue'
-import ErrorLog from '@/components/ErrorLog/index.vue'
-import Screenfull from '@/components/Screenfull/index.vue'
+// import ErrorLog from '@/components/ErrorLog/index.vue'
+// import Screenfull from '@/components/Screenfull/index.vue'
 import SizeSelect from '@/components/SizeSelect/index.vue'
-import Search from '@/components/HeaderSearch/index.vue'
+// import Search from '@/components/HeaderSearch/index.vue'
 
 import { computed } from 'vue'
 

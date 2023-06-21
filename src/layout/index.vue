@@ -1,18 +1,39 @@
 <template>
   <div :class="layoutComputed.classObj" class="app-wrapper">
-    <div v-if="layoutComputed.getDevice==='mobile'&&layoutComputed.sidebar.opened" class="drawer-bg" @click="handleClickOutside" />
-    <sidebar class="sidebar-container" />
-    <div :class="{ hasTagsView: layoutComputed.needTagsView }" class="main-container">
-        <div :class="{'fixed-header': layoutComputed.fixedHeader}">
+    <el-container>
+      <el-aside class="sidebar-container">
+        <sidebar />
+      </el-aside>
+      <el-container :class="{ hasTagsView: layoutComputed.needTagsView }" class="main-container">
+        <el-header :class="{'fixed-header': layoutComputed.fixedHeader}">
           <navbar />
           <tags-view v-if="layoutComputed.needTagsView" />
-        </div>
-        <app-main />
-        <right-panel v-if="layoutComputed.showSettings">
-          <settings />
-        </right-panel>
-    </div>
+        </el-header>
+        <el-main>
+          <app-main />
+          <right-panel v-if="layoutComputed.showSettings">
+              <settings />
+          </right-panel>
+        </el-main>
+      </el-container>
+    </el-container>
   </div>
+<!--  <div :class="layoutComputed.classObj" class="app-wrapper">-->
+<!--    <div v-if="layoutComputed.getDevice==='mobile'&&layoutComputed.sidebar.opened" class="drawer-bg" @click="handleClickOutside" />-->
+<!--    <sidebar class="sidebar-container" />-->
+<!--    <div :class="{ hasTagsView: layoutComputed.needTagsView }" class="main-container">-->
+<!--        <div :class="{'fixed-header': layoutComputed.fixedHeader}">-->
+<!--          <navbar />-->
+<!--          <tags-view v-if="layoutComputed.needTagsView" />-->
+<!--        </div>-->
+
+<!--      <app-main />-->
+
+<!--      <right-panel v-if="layoutComputed.showSettings">-->
+<!--          <settings />-->
+<!--      </right-panel>-->
+<!--    </div>-->
+<!--  </div>-->
 </template>
 
 <script setup>
@@ -56,6 +77,14 @@ function handleClickOutside() {
     &.mobile.openSidebar {
       position: fixed;
       top: 0;
+    }
+    .el-header {
+      padding: 0;
+      height: auto;
+    }
+
+    .el-main {
+      padding: 0;
     }
   }
 
