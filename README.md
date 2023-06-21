@@ -2,28 +2,29 @@
 
 This template should help get you started developing with Vue 3 in Vite.
 
-## Recommended IDE Setup
-
-[VSCode](https://code.visualstudio.com/) + [Volar](https://marketplace.visualstudio.com/items?itemName=Vue.volar) (and disable Vetur) + [TypeScript Vue Plugin (Volar)](https://marketplace.visualstudio.com/items?itemName=Vue.vscode-typescript-vue-plugin).
-
 ## Customize configuration
 
-See [Vite Configuration Reference](https://vitejs.dev/config/).
+1. [Vite Configuration Reference](https://vitejs.dev/config/).
+2. [Vue](https://vuejs.org/)
+3. [Element-plus](https://element-plus.org/en-US/).
+3. [Pinia](https://pinia.vuejs.org/)
+4. [Vue-Router 4](https://router.vuejs.org/guide/)
+5. [Vue2 Element-UI Admin Template](https://panjiachen.github.io/vue-element-admin/#/dashboard)
 
 ## Project Setup
 
 ```sh
-npm install
+yarn install
 ```
 
 ### Compile and Hot-Reload for Development
 
 ```sh
-npm run dev
+yarn dev
 ```
 
 ### Compile and Minify for Production
 
 ```sh
-npm run build
+#npm run build
 ```
