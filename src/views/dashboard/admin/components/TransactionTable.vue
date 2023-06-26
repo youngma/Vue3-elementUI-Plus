@@ -1,18 +1,18 @@
 <template>
   <el-table :data="list" style="width: 100%;padding-top: 15px;">
     <el-table-column label="Order_No" min-width="200">
-      <template slot-scope="scope">
-        {{ scope.row.order_no | orderNoFilter }}
+      <template #default="scope">
+        {{ scope.row.order_no}}
       </template>
     </el-table-column>
-    <el-table-column label="Price" width="195" align="center">
-      <template slot-scope="scope">
-        ¥{{ scope.row.price | toThousandFilter }}
+    <el-table-column label="Price" width="195" align="right">
+      <template #default="scope">
+        ¥{{ scope.row.price.toLocaleString('ko-KR')}}
       </template>
     </el-table-column>
     <el-table-column label="Status" width="100" align="center">
-      <template slot-scope="{row}">
-        <el-tag :type="row.status | statusFilter">
+      <template #default="{row}">
+        <el-tag :type="row.status ">
           {{ row.status }}
         </el-tag>
       </template>
@@ -20,36 +20,20 @@
   </el-table>
 </template>
 
-<script>
+<script setup>
 import { transactionList } from '@/api/remote-search'
+import { onMounted, ref } from 'vue'
 
-export default {
-  filters: {
-    statusFilter(status) {
-      const statusMap = {
-        success: 'success',
-        pending: 'danger'
-      }
-      return statusMap[status]
-    },
-    orderNoFilter(str) {
-      return str.substring(0, 30)
-    }
-  },
-  data() {
-    return {
-      list: null
-    }
-  },
-  created() {
-    this.fetchData()
-  },
-  methods: {
-    fetchData() {
-      transactionList().then(response => {
-        this.list = response.data.items.slice(0, 8)
-      })
-    }
-  }
+const list = ref([])
+
+function fetchData() {
+  transactionList().then(response => {
+    list.value = response.data.items.slice(0, 8)
+  })
 }
+
+onMounted(() => {
+  fetchData()
+})
+
 </script>

@@ -49,7 +49,7 @@ export default ({ mode }) => {
         // According to the project configuration. Can be configured in the .env file
         enable: process.env.NODE_ENV === 'development',
         logger: process.env.NODE_ENV === 'development',
-        watchFiles: false
+        watchFiles: true
       }),
       ElementPlus({
         useSource: true

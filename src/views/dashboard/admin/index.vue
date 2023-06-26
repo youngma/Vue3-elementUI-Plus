@@ -2,7 +2,7 @@
   <div class="dashboard-editor-container">
 <!--    <github-corner class="github-corner" />-->
 
-<!--    <panel-group @handleSetLineChartData="handleSetLineChartData" />-->
+    <panel-group @handleSetLineChartData="handleSetLineChartData" />
 
     <el-row style="background:#fff;padding:16px 16px 0;margin-bottom:32px;">
 <!--      <line-chart :chart-data="lineChartData" />-->
@@ -28,7 +28,7 @@
 
     <el-row :gutter="8">
       <el-col :xs="{span: 24}" :sm="{span: 24}" :md="{span: 24}" :lg="{span: 12}" :xl="{span: 12}" style="padding-right:8px;margin-bottom:30px;">
-<!--        <transaction-table />-->
+        <transaction-table />
       </el-col>
       <el-col :xs="{span: 24}" :sm="{span: 12}" :md="{span: 12}" :lg="{span: 6}" :xl="{span: 6}" style="margin-bottom:30px;">
 <!--        <todo-list />-->
@@ -40,18 +40,23 @@
   </div>
 </template>
 
-<script>
+<script setup>
 // import GithubCorner from '@/components/GithubCorner/index.vue'
-// import PanelGroup from './components/PanelGroup.vue'
+import PanelGroup from './components/PanelGroup.vue'
+import { computed, ref } from 'vue'
 // import LineChart from './components/LineChart.vue'
 // import RaddarChart from './components/RaddarChart.vue'
 // import PieChart from './components/PieChart.vue'
 // import BarChart from './components/BarChart.vue'
-// import TransactionTable from './components/TransactionTable.vue'
+import TransactionTable from './components/TransactionTable.vue'
 // import TodoList from './components/TodoList/index.vue'
 // import BoxCard from './components/BoxCard.vue'
 
-const lineChartData = {
+defineOptions({
+  name: 'DashboardAdmin'
+})
+
+const lineChartData = ref({
   newVisitis: {
     expectedData: [100, 120, 161, 134, 105, 160, 165],
     actualData: [120, 82, 91, 154, 162, 140, 145]
@@ -68,32 +73,38 @@ const lineChartData = {
     expectedData: [130, 140, 141, 142, 145, 150, 160],
     actualData: [120, 82, 91, 154, 162, 140, 130]
   }
+})
+
+
+
+function handleSetLineChartData(type) {
+  this.value.lineChartData = lineChartData[type]
 }
 
-export default {
-  name: 'DashboardAdmin',
-  components: {
-    // GithubCorner,
-    // PanelGroup,
-    // LineChart,
-    // RaddarChart,
-    // PieChart,
-    // BarChart,
-    // TransactionTable,
-    // TodoList,
-    // BoxCard
-  },
-  data() {
-    return {
-      lineChartData: lineChartData.newVisitis
-    }
-  },
-  methods: {
-    handleSetLineChartData(type) {
-      this.lineChartData = lineChartData[type]
-    }
-  }
-}
+// export default {
+//
+//   components: {
+//     // GithubCorner,
+//     PanelGroup
+//     // LineChart,
+//     // RaddarChart,
+//     // PieChart,
+//     // BarChart,
+//     // TransactionTable,
+//     // TodoList,
+//     // BoxCard
+//   },
+//   data() {
+//     return {
+//       lineChartData: lineChartData.newVisitis
+//     }
+//   },
+//   methods: {
+//     handleSetLineChartData(type) {
+//       this.lineChartData = lineChartData[type]
+//     }
+//   }
+// }
 </script>
 
 <style lang="scss" scoped>
