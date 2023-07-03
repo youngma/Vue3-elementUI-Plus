@@ -1,25 +1,20 @@
 <template>
-  <div>
-    <CodeMirror
-      :lang="lang"
-      basic
-      :model-value="code"
-      :extensions="extensions"
-      @change="update($event)"
-      @focus="log('focus', $event)"
-      @blur="log('blur', $event)"
-    >
-    </CodeMirror>
+  <div css="">
+    <div class="editor language-javascript dark">
+
+    </div>
   </div>
 </template>
 
 <script setup>
+import { CodeJar } from 'codejar'
+import { withLineNumbers } from 'codejar/linenumbers'
+import Prism from 'prismjs'
+import { computed, onMounted, ref } from 'vue'
 
-import CodeMirror from 'vue-codemirror6'
-import { json, jsonParseLinter } from '@codemirror/lang-json'
-import { computed, ref } from 'vue'
-import { oneDark } from '@codemirror/theme-one-dark'
-import { lintGutter, linter, openLintPanel } from '@codemirror/lint'
+defineOptions({
+  name: 'CodeJarEditor'
+})
 
 const props = defineProps({
   jsonObject: Object
@@ -27,98 +22,42 @@ const props = defineProps({
 
 const text = ref(props.jsonObject)
 const code = computed(() => JSON.stringify(text.value, null, 2))
+// const code = computed(() => 'p { color: red }')
 
-const lang = json()
+onMounted(() => {
+  const options = {
+    tab: ' '.repeat(4), // default is '\t'
+    indentOn: /[(\[]$/, // default is /{$/
+    readonly: true
+  }
 
-const log = console.log
-function update(evt) {
-  // log(1)
-  // text.value = evt.doc.toString()
-}
+  const codeJar = CodeJar(document.querySelector('.editor')
+    , withLineNumbers(Prism.highlightElement)
+    , options)
 
-defineOptions({
-  name: 'JsonCodeMirror'
+  codeJar.updateCode(code.value)
 })
 
-const extensions = [
-  oneDark,
-  json(),
-  // linter(),
-  lintGutter()
-]
-
-// export default {
-//
-//   components: {
-//     CodeMirror
-//   },
-//   props: ['jsonObject'],
-//   setup(props) {
-//     // eslint-disable-next-line no-undef
-//
-//
-//     return {
-//       code,
-//       lang,
-//       dark,
-//       linter,
-//       log: console.log
-//     }
-//   },
-//   data() {
-//     return {
-//       jsonEditor: false
-//     }
-//   },
-//   watch: {
-//     // value(value) {
-//     //   const editorValue = this.jsonEditor.getValue()
-//     //   if (value !== editorValue) {
-//     //     this.jsonEditor.setValue(JSON.stringify(this.value, null, 2))
-//     //   }
-//     // }
-//   },
-//   mounted() {
-//     // this.jsonEditor = CodeMirror.fromTextArea(this.$refs.textarea, {
-//     //   lineNumbers: true,
-//     //   mode: 'application/json',
-//     //   gutters: ['CodeMirror-lint-markers'],
-//     //   theme: 'rubyblue',
-//     //   lint: true
-//     // })
-//     //
-//     // this.jsonEditor.setValue(JSON.stringify(this.value, null, 2))
-//     // this.jsonEditor.on('change', cm => {
-//     //   this.$emit('changed', cm.getValue())
-//     //   this.$emit('input', cm.getValue())
-//     // })
-//   },
-//   methods: {
-//     // getValue() {
-//     //   return this.jsonEditor.getValue()
-//     // }
-//   }
-// }
 </script>
 
+<style lang="css">
+@import "prismjs/themes/prism-dark.css"
+</style>
+
 <style lang="scss" scoped>
-.json-editor {
+
+.editor {
+  border-radius: 6px;
+  box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 1px 5px 0 rgba(0, 0, 0, 0.12), 0 3px 1px -2px rgba(0, 0, 0, 0.2);
+  font-family: 'Source Code Pro', monospace;
+  font-size: 14px;
+  font-weight: 400;
+  min-height: 340px;
+  letter-spacing: normal;
+  line-height: 20px;
+  padding: 10px;
+  tab-size: 4;
   height: 100%;
-  position: relative;
-
-  ::v-deep {
-    .CodeMirror {
-      height: auto;
-      min-height: 300px;
-    }
-
-    .CodeMirror-scroll {
-      min-height: 300px;
-    }
-
-    .cm-s-rubyblue span.cm-string {
-      color: #F08047;
-    }
-  }
+  width: 100%;
 }
 </style>

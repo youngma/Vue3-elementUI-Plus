@@ -30,6 +30,12 @@ const componentsRouter = {
       name: 'JsonEditorDemo',
       meta: { title: 'JSON Editor' }
     },
+    {
+      path: 'code-jar-editor',
+      component: () => import('@/views/demo/codeJarEditor.vue'),
+      name: 'CodeJarEditorDemo',
+      meta: { title: 'Code-Jar Editor' }
+    },
     // {
     //   path: 'split-pane',
     //   component: () => import('@/views/components-demo/split-pane.vue'),

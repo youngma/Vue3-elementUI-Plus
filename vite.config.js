@@ -12,7 +12,7 @@ import path from 'path-browserify'
 import { viteMockServe } from '@lincy/vite-plugin-mock'
 
 // const pathSrc = path.resolve(__dirname, 'src')
-// const pathNodeModules = path.resolve(__dirname, 'node_modules')
+const pathNodeModules = path.resolve(__dirname, 'node_modules')
 
 // https://vitejs.dev/config/
 
@@ -23,8 +23,8 @@ export default ({ mode }) => {
     resolve: {
       alias: {
         path: 'path-browserify',
-        '@': fileURLToPath(new URL('./src', import.meta.url))
-        // '~': `${pathNodeModules}/`
+        '@': fileURLToPath(new URL('./src', import.meta.url)),
+        '~': `${pathNodeModules}/`
       }
     },
     css: {

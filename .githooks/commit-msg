@@ -1,0 +1,24 @@
+#!/bin/bash
+
+COMMIT_MESSAGE_FILE_PATH=$1
+MESSAGE=$(cat "$COMMIT_MESSAGE_FILE_PATH")
+
+# 커밋 메시지가 있을 때만 티켓 넘버를 추가한다.
+# 커밋 메시지가 비이었으면 'Aborting commit due to empty commit message.' 와 함께 커밋이 실패해야 하는데
+# 이 상황에서 티켓 넘버를 메시지에 추가해버리면 커밋이 성공해버린다. 이를 방지하기 위해 커밋 메시지가 있을 때만 티켓 넘버를 추가한다.
+if [[ $(head -1 "$COMMIT_MESSAGE_FILE_PATH") == '' ]]; then
+  exit 0
+fi
+
+# 브랜치 이름에서 마지막 '/' 이후의 문자열만 남긴다. '/'가 없다면 브랜치 전체 이름이 POSTFIX 된다.
+# POSTFIX의 첫 번째 '-' 앞뒤의 문자열만 포함한다. '-'가 없다면 변경은 없다
+# e.g.)
+# | branch name      | postfix    |
+# |------------------|------------|
+# | chore/KICK-611   | [KICK-611] |
+# | chore/KICK-611-1 | [KICK-611] |
+# | KICK-611         | [KICK-611] |
+# | NODASH           | [NODASH]   |
+POSTFIX=$(git branch | grep '\*' | sed 's/* //' | sed 's/^.*\///' | sed 's/^\([^-]*-[^-]*\).*/\1/')
+
+printf "%s\n\n[%s]" "$MESSAGE" "$POSTFIX" > "$COMMIT_MESSAGE_FILE_PATH"

@@ -11,10 +11,10 @@
       </template>
     </el-table-column>
     <el-table-column label="Status" width="100" align="center">
-      <template #default="{row}">
-        <el-tag :type="row.status ">
+      <template #default="{ row }">
+<!--        <el-tag :type="row.status ">-->
           {{ row.status }}
-        </el-tag>
+<!--        </el-tag>-->
       </template>
     </el-table-column>
   </el-table>

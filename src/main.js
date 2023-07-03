@@ -2,11 +2,16 @@ import Cookies from 'js-cookie'
 import ElementPlus from 'element-plus'
 
 import '@/styles/index.scss' // global css
+
 import 'normalize.css/normalize.css' // a modern alternative to CSS resets
 import '@/styles/element-variables.module.scss'
 import enLang from 'element-plus/lib/locale/lang/en'// 如果使用中文语言包请默认支持，无需额外引入，请删除该依赖
 
 import { autoAnimatePlugin } from '@formkit/auto-animate/vue'
+
+import '@egjs/vue3-flicking/dist/flicking.css'
+// Or, if you have to support IE9
+import '@egjs/vue3-flicking/dist/flicking-inline.css'
 
 // import * as filters from '@/filters' // global filters
 
@@ -23,8 +28,6 @@ import * as permission from '@/permission.js'
 const pinia = createPinia()
 pinia.use(piniaPluginPersistedstate)
 
-
-
 const newApp = createApp(App)
   .use(pinia)
   .use(ElementPlus, {
@@ -40,7 +43,6 @@ newApp.use(autoAnimatePlugin)
 for (const [key, component] of Object.entries(ElementPlusIconsVue)) {
   newApp.component(key, component)
 }
-
 
 newApp.config.globalProperties.$router = router
 newApp.provide('$router', newApp.config.globalProperties.$router)

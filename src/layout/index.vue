@@ -48,7 +48,7 @@ import { AppMain, Navbar, Settings, Sidebar, TagsView } from './components'
 
 import { appStore } from '@/store/modules/app'
 import { settingStore } from '@/store/modules/settings'
-import { computed, inject, onBeforeMount, onBeforeUnmount, onMounted, watch } from 'vue'
+import {computed, inject, onBeforeMount, onBeforeUnmount, onMounted, reactive, ref, watch} from 'vue'
 
 const router = inject('$router')
 
@@ -59,7 +59,7 @@ const layoutComputed = computed(() => {
   return {
     classObj: _appStore.classObj,
     device: _appStore.getDevice,
-    sidebar: _settingStore.settings.sidebar,
+    sidebar: _appStore.sidebar,
     needTagsView: _settingStore.settings.needTagsView,
     showSettings: _settingStore.settings.showSettings,
     fixedHeader: _settingStore.settings.fixedHeader
@@ -86,7 +86,7 @@ function $_resizeHandler() {
 watch(
   () => router.currentRoute.value.fullPath,
   async fullPath => {
-    if (this.device === 'mobile' && this.sidebar.opened) {
+    if (_appStore.getDevice === 'mobile' && _appStore.sidebar.opened) {
       // store.dispatch('app/closeSideBar', { withoutAnimation: false })
       _appStore.closeSideBar({ withoutAnimation: false })
     }

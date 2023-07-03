@@ -1,0 +1,23 @@
+#!/bin/sh
+# .git/hooks/prepare-commit-msg
+#
+# Automatically add branch name and branch description to every commit message except merge commit.
+# https://stackoverflow.com/a/18739064
+#
+
+COMMIT_MESSAGE_FILE_PATH=$1
+
+# merge commit에 대해서는 prefix를 생성하지 않는다.
+MERGE=$(grep -c -i 'merge' < "$COMMIT_MESSAGE_FILE_PATH")
+if [ "$MERGE" != "0" ] ; then
+  exit 0
+fi
+
+TYPE=$(git branch | grep '\*' | sed 's/\* //' | sed 's/\([^/]*\).*/\1/')
+DESCRIPTION=$(git config branch."$TYPE".description)
+echo "$TYPE: $(cat "$COMMIT_MESSAGE_FILE_PATH")" > "$COMMIT_MESSAGE_FILE_PATH"
+if [ -n "$DESCRIPTION" ]
+then
+   echo "" >> "$COMMIT_MESSAGE_FILE_PATH"
+   echo "$DESCRIPTION" >> "$COMMIT_MESSAGE_FILE_PATH"
+fi

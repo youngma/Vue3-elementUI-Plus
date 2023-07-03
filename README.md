@@ -28,3 +28,24 @@ yarn dev
 ```sh
 #npm run build
 ```
+
+
+## Setup Git Hooks
+
+```bash
+$ make
+```
+
+
+## Setup Git Hooks
+
+```bash
+$ make
+```
+
+
+## Setup Git Hooks
+
+```bash
+$ make
+```
